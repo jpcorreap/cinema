@@ -56,7 +56,7 @@ export default {
             .attr("style", `max-width: ${width}px; height: auto; font: 10px sans-serif; overflow: visible;`);
 
         const bar = svg.append("g")
-            .attr("fill", "green")
+            .attr("fill", "#22C55E")
             .selectAll("rect")
             .data(data)
             .join("rect")
@@ -111,11 +111,3 @@ export default {
   }
 };
 </script>
-
-
-
-<style scoped>
-.bar {
-  fill: steelblue;
-}
-</style>
