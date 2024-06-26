@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto p-4">
-    <div v-if="selectedMovie" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div v-if="selectedMovie" class="grid grid-cols-1 lg:grid-cols-[1fr_4fr] gap-2">
 
       <div>
         <img :src="selectedMovie.poster" alt="Movie Poster" class="w-64 h-96 object-cover" />
@@ -9,24 +9,38 @@
         <p>{{ selectedMovie.plot }}</p>
       </div>
 
-      <div>
-        <h3 class="text-xl mb-4">Seat selection</h3>
-        <SeatSelection :selectedSeats="selectedSeats" @update:selectedSeats="updateSelectedSeats" />
         <div class="mt-4">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <h3 class="text-xl mb-4">Seat selection</h3>
+              <SeatSelection :selectedSeats="selectedSeats" @update:selectedSeats="updateSelectedSeats" />
+            </div>
+
+            <div>
+              <h3 class="text-xl mb-4">Taken seats by function hour</h3>
+              <DataViz />
+            </div>
+          </div>
+
           <h3 class="text-xl mb-2">Client Information</h3>
           <form @submit.prevent="generateReceipt" class="space-y-4">
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-400">Name</label>
+              <label for="name" class="block text-sm font-medium text-gray-600">Name</label>
               <input
                 type="text"
                 id="name"
                 v-model="clientName"
-                class="mt-1 block text-black w-full border-gray-300 rounded-md shadow-sm h-12 px-4"
+                class="mt-1 block text-black w-full border-gray-600 rounded-md shadow-sm h-12 px-4"
                 required
               />
+              <h3 class="text-xl mt-4">Selected seats:</h3>
+              <p>{{ selectedSeats.length ? selectedSeats.join(' ') : "N/A" }}</p>
             </div>
+
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-400">Email</label>
+              <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
               <input
                 type="email"
                 id="email"
@@ -34,23 +48,21 @@
                 class="mt-1 block text-black w-full border-gray-300 rounded-md shadow-sm h-12 px-4"
                 required
               />
+              <h3 class="text-xl">Final amount to pay:</h3>
+              <p>{{ formattedPrice }}</p>
             </div>
-
-            <h3 class="text-xl">Selected seats:</h3>
-          <p>{{ selectedSeats.length ? selectedSeats.join(' ') : "N/A" }}</p>
-          <h3 class="text-xl">Final amount to pay:</h3>
-          <p>{{ formattedPrice }}</p>
+          </div>
 
           
-            <button
-              type="submit"
-              class="w-full bg-green-500 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400"
-              :disabled="!formIsValid"
-            >
-              Get invoice
-            </button>
-          </form>
-        </div>
+          <button
+            type="submit"
+            class="w-full bg-green-500 text-white font-bold py-2 px-4 rounded disabled:bg-gray-400"
+            :disabled="!formIsValid"
+          >
+            Get invoice
+          </button>
+          
+        </form>
 
       </div>
 
@@ -65,6 +77,7 @@
 import { jsPDF } from 'jspdf';
 import Movie from '@/models/Movie';
 import SeatSelection from '../components/SeatSelection.vue';
+import DataViz from '../components/DataViz.vue';
 import { formatCurrencyToColombianPeso, formatDate } from '@/utils/format';
 
 const SEAT_COST = 15000;
@@ -72,7 +85,8 @@ const SEAT_COST = 15000;
 export default {
   props: ['movieId'],
   components: {
-    SeatSelection
+    SeatSelection,
+    DataViz
   },
   data() {
     return {
