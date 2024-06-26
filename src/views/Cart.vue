@@ -110,7 +110,7 @@ export default {
   methods: {
     async fetchDetail(movieId) {
       try {
-        const response = await fetch(`http://www.omdbapi.com?apikey=bf8f4e8e&i=${movieId}`);
+        const response = await fetch(`https://www.omdbapi.com?apikey=bf8f4e8e&i=${movieId}`);
         const movieDetail = await response.json();
 
         this.selectedMovie = new Movie({
