@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto p-4">
-    <div v-if="selectedMovie" class="grid grid-cols-1 lg:grid-cols-[1fr_4fr] gap-2">
+    <div v-if="selectedMovie" class="grid grid-cols-1 lg:grid-cols-[1fr_4fr] gap-10">
 
       <div>
         <img :src="selectedMovie.poster" alt="Movie Poster" class="w-64 h-96 object-cover" />
